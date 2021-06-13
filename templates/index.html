@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+    <div id="swup" class="transition-fade box one-edge-shadow">
+            <h1>Clone Your Voice</h1>
+            <br>
+        <div class="cards">
+            <a class="card" href="{{ url_for('capture') }}">
+                RECORD
+                <span class="material-icons">mic</span>
+
+            </a>
+            <a class="card" href="{{ url_for('upload') }}">
+                UPLOAD
+                <span class="material-icons">publish</span>
+            </a>
+        </div>
+              <br>
+<!--        <a href="{{ url_for('capture') }}"><button id="evaluate">Capture & Evaluate</button></a>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <a href="{{ url_for('upload') }}"><button id="upload">Upload & Evaluate</button></a>-->
+    </div>
+
+{% endblock content %}
