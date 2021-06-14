@@ -1,10 +1,18 @@
 const micObj = document.querySelector('#mic');
 const barObj = document.querySelector("#bar-time");
 const voiceNode = document.querySelector('#voice-btn');
-
+var myBlob = null;
 function grow(){
     micObj.classList.toggle("grow");
     barObj.classList.toggle("progress-bar");
+}
+
+function loading() {
+    let canvas = document.querySelector('.processing');
+    canvas.innerHTML = `<div id="loading">
+                    <div id="ring" class="ring">LOADING<div class='ringer'></div></div>
+                </div>`;
+
 }
 
 
@@ -24,6 +32,7 @@ function record(){
     if (recorder.state == 'inactive')
     {
         var blob = new Blob(items, {type: 'audio/webm'});
+        myBlob = blob;
         var mainaudio = document.createElement('audio');
         mainaudio.setAttribute('controls', 'controls');
         audio.appendChild(mainaudio);
@@ -39,41 +48,39 @@ function record(){
     })
 }
 
-function myProcess(){
-    voiceNode.innerHTML = `<button style="width: 120px" onclick="callProcess()">Process</button>`;
+async function sendAudioFile(file){
+  const formData = new FormData();
+  formData.append('audio-file', file);
+  return await fetch('/audioUpload', {
+    method: 'POST',
+    body: formData
+  });
 }
 
-function callProcess(){
-    let recording = document.querySelector('source').src;
-    location.replace(`/process/${recording}`)
+function myProcess(){
+    voiceNode.innerHTML = `<button style="width: 120px" class="btn" onclick="callProcess()">Process</button>`;
+}
+
+async function callProcess(){
+    if(myBlob != null){
+        await sendAudioFile(myBlob);
+        location.replace(`/cloning`)
+    }
+
 }
 
 async function getAudio(msg){
-    const response = await fetch('/okay', {method: 'POST', body: JSON.stringify({'message': msg}),
+    const response = await fetch('/clone_api', {method: 'POST', body: JSON.stringify({'message': msg}),
         headers: {"Content-type": "application/json; charset=UTF-8"}});
     const data = await response.json();
 	return data.result;
 }
-
-// capture Images
-function capture(){
-    // <canvas id="image" class="canvas"></canvas>
-    let canvas = document.createElement("CANVAS");
-    canvas.id = "image";
-    canvas.height = 450;
-    canvas.width = 500;
-    let context = canvas.getContext('2d');
-    let vid = document.querySelector('.videoObject');
-
-    context.drawImage(video , 0 , 0 , 500 , 400);
-    // console.log(video.height, video.width, canvas.height , canvas.width);
-    vid.innerHTML = '';
-    vid.appendChild(canvas);
-    let img = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
-    // console.log(img);
-    img_string = img;
-    let change = document.querySelector('#change');
-    // change.innerHTML = `<button onclick="fetchResult()">Process</button>`;
-    change.innerHTML = `<a onclick="loading()" href="/process/${img}"><button>Process</button></a>`;
+async function cloneVoice(){
+    loading();
+    let obj = document.querySelector('#msg');
+    let audio = await getAudio(obj.value);
+    let element = `<audio controls><source src="/${audio}" type="audio/mp3"></audio>`
+    let node = document.querySelector('.processing')
+    node.innerHTML = element;
 
 }
