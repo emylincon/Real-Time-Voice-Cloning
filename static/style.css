@@ -183,6 +183,11 @@ a{
     text-decoration: none;
 }
 
+#msg{
+    padding: 10px;
+
+}
+
 .cards{
     display: flex;
     flex-direction: column;
