@@ -19,7 +19,11 @@
                 <div id="voice-btn"></div>
             </div>
         <br>
+        <button id="previous" onclick="myPrevious()">Previous</button>
 <!-- <span class="material-icons">arrow_back_ios</span>-->
     </div>
+    <script>
+        function myPrevious(){location.replace('/')}
+    </script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 {% endblock content %}
