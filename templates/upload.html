@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="box one-edge-shadow">
+<!--        <div class="wrapper">-->
+            <h1>Upload MP3</h1>
+            <br>
+            <form id='form' action='/process' method="POST" enctype='multipart/form-data'>
+                    <div class="input-fields">
+                        <input type='file' onchange="file_label()" class="input" id='file' name='file' value='' placeholder="upload">
+                        <span onclick='upload_click()' class='upload'><span class="material-icons">add</span>&nbsp;UPLOAD MP3</span>
+
+                    </div>
+                    <!--<input class="btn" type='submit' value='RUN'>-->
+                    <div onclick="loading()" class='buttons'>
+                        <input  class="run" type='submit' value='RUN'>
+                    </div>
+                </form>
+        <div id="image"></div>
+        <br>
+        <button id="previous" onclick="myPrevious()">Previous</button>
+<!--        <div>-->
+<!--           <span class="material-icons">arrow_back_ios</span>-->
+<!--        </div>-->
+
+<!--        </div>-->
+    </div>
+    <script src="{{ url_for('static', filename='forms.js') }}"></script>
+{% endblock content %}

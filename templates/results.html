@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="box one-edge-shadow">
+            <h1>Clone Voice</h1>
+            <div id="result">
+                <textarea id="msg" name="msg" rows="4" cols="70" onkeyup="check()" placeholder="Write message to clone..."></textarea>
+                <br>
+                <button onClick="cloneVoice()" id="btn-clone" class="btn">CLONE</button>
+
+            </div>
+            <br>
+            <div class="processing"></div>
+<!--            <a href="{{ url_for('home') }}" id='rerun'><button id="again">Rerun</button></a>-->
+            <button id="previous" onclick="myPrevious()">Previous</button>
+
+    </div>
+<script>
+    const myNode = document.querySelector('#btn-clone');
+    const myText = document.querySelector('#msg');
+
+    myNode.disabled = true;
+
+    function check(){
+        if(myText.value !== ''){
+            myNode.disabled = false;
+        }
+        else{
+            myNode.disabled = true;
+        }
+    }
+    function myPrevious(){location.replace('/capture')}
+</script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock content %}

@@ -2,9 +2,10 @@ from flask import Flask, render_template, url_for, request, session, redirect, j
 from datetime import timedelta
 import codecs as c
 import time
-import wget
 from werkzeug.utils import secure_filename
 from VoiceClone import Demo
+import json
+import numpy as np
 
 app = Flask(__name__)
 app.secret_key = "28wrifn43qwrpfo24wrefichl"
@@ -42,29 +43,20 @@ def fin2(base_string, file_name):  # this writes the image to disk
     fh.close()
 
 
-@app.route('/process/<path:url>')
-def process(url):
-    audio_path = f'VoiceClone/audio/{output:03}.weba'
-    wget.download(url, audio_path)
-    embed = CLONE_OBJ.process_voice(audio_path)
-    session['embed'] = embed
-    redirect(url_for('cloning'))
-
-
 @app.route('/cloning')
 def cloning():
     if session.get('embed') is not None:
         return render_template('results.html')
     else:
-        return render_template('results.html')
-        # return redirect(url_for('home'))
+        # return render_template('results.html')
+        return redirect(url_for('home'))
 
 
 @app.route('/clone_api', methods=['POST'])
 def clone_api():
     try:
         json_req = request.get_json()
-        audio = CLONE_OBJ.clone_voice(session['embed'], json_req['message'])
+        audio = CLONE_OBJ.clone_voice(np.array(session['embed']), json_req['message'])
         return jsonify({'result': audio}), 201
     except Exception as e:
         return jsonify({'error': f'{e}'}), 404
@@ -78,17 +70,34 @@ def okay():
     else:
         return jsonify({'result': session['user']})
 
-@app.route('/compare', methods=['POST', 'GET'])
-def compare():
+
+@app.route('/audioUpload', methods=['POST'])
+def audio():
+    sent_file = request.files['audio-file']
+    full_name = f'VoiceClone/audio/{output:03}.weba'
+    sent_file.save(full_name)
+    embed = CLONE_OBJ.process_voice(full_name)
+    em = embed.tolist()
+
+    session['embed'] = em
+
+    # print(embed == np.array(session['embed']))
+    return jsonify({'result': 'done'})
+
+
+@app.route('/process', methods=['POST', 'GET'])
+def process():
     if request.method == 'POST':
 
         sent_file = request.files['file']
-        full_name = f"{int(time.time())}" + secure_filename(sent_file.filename)
-        f_name = f'static/temp/{full_name}'
-        sent_file.save(f_name)
-        result = None
+        full_name = f'VoiceClone/audio/{output:03}.weba'
+        sent_file.save(full_name)
+        embed = CLONE_OBJ.process_voice(full_name)
+        em = embed.tolist()
 
-        return render_template('results.html', res=result)
+        session['embed'] = em
+
+        return redirect(url_for('cloning'))
     else:
         return home()
 
