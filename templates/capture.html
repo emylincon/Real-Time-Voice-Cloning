@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="box one-edge-shadow">
+            <h1>Voice Record</h1>
+        <br>
+        <div class="message">
+            Press record and say your name followed by the sentence for 8 seconds
+            <br>
+            <span style="color:darkred; font-weight: 1000;">"The quick brown fox jumps over a lazy dog"</span>
+        </div>
+            <div class="container">
+
+                <div class="mic">
+                    <span class="material-icons" id="mic" onclick="record()">mic</span>
+                </div>
+                <div class="audio" id="audio" ></div>
+                <div id="bar-time"></div>
+                <br>
+                <div id="voice-btn"></div>
+            </div>
+        <br>
+<!-- <span class="material-icons">arrow_back_ios</span>-->
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock content %}

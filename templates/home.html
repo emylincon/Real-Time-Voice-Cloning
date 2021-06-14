@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <link rel="icon" href="{{ url_for('static', filename='ecz.ico') }}" type="image/x-icon" />
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel="stylesheet">
+    <script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Eczamine</title>
+</head>
+<body>
+    <section>
+        <div class="section-main">
+            <div class="section-title">Eczamine</div>
+            <div class="motto">Take Back Control of Your Skin</div>
+        </div>
+        <img src="{{ url_for('static', filename='loading.gif') }}"/>
+    </section>
+    <div class="top-div">
+        <div class="title one-edge-shadow"><a style="text-decoration:none; color: white;" href="{{ url_for('home') }}">VClone</a></div>
+        <div class="about ">Evaluation of Eczema Image Classification Models</div>
+    </div>
+    <div class="main">
+        <div id="swup" class="transition-fade box one-edge-shadow">
+            <h1>Evaluate Models</h1>
+            <br>
+            <table class='query'>
+                <tr>
+                      <th>Model Base</th>
+                      <th>Accuracy</th>
+                </tr>
+
+                <tr>
+                    <td >RESNET50</td>
+                    <td >91%</td>
+                </tr>
+
+                <tr>
+                    <td >EFFICIENTNET</td>
+                    <td >88% </td>
+                </tr>
+
+                <tr>
+                    <td >INCEPTIONV3</td>
+                    <td >84% </td>
+                </tr>
+
+
+              </table>
+
+              <br>
+        <a href="{{ url_for('capture') }}"><button id="evaluate">Capture & Evaluate</button></a>
+        <br>
+        <br>
+        <a href="{{ url_for('upload') }}"><button id="upload">Upload & Evaluate</button></a>
+    </div>
+
+    </div>
+    <div id="footer">
+        <div class="inner-footer">
+            <img src="{{ url_for('static', filename='footer-img.jpeg') }}" id="face"/>
+            <br>
+            Designed by Emeka Ugwuanyi
+            <p>
+                <a href="https://github.com/emylincon"><i class="fa fa-github"></i></a>
+                    &nbsp;
+            <a href="https://www.linkedin.com/in/emeka-ugwuanyi-259089121/"><i class="fa fa-linkedin"></i></a>
+            </p>
+        </div>
+
+    </div>
+    <script>
+        setTimeout(() =>{
+        let section = document.querySelector('section');
+            section.classList.add('disapper');
+            // section.style.display='none';
+        }, 2000)
+
+    setTimeout(() =>{
+        let section = document.querySelector('section');
+        let body = document.querySelector('body');
+        section.style.display='none';
+        body.style.overflow='auto';
+    }, 2500)
+    </script>
+</body>
+</html>
