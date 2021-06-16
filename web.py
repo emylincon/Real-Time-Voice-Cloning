@@ -10,7 +10,6 @@ import numpy as np
 app = Flask(__name__)
 app.secret_key = "28wrifn43qwrpfo24wrefichl"
 app.permanent_session_lifetime = timedelta(minutes=60)
-output = 1
 CLONE_OBJ = Demo.Clone(location='root')
 
 
@@ -71,15 +70,17 @@ def okay():
         return jsonify({'result': session['user']})
 
 
+def process_audio(audio_file):
+    full_name = f'VoiceClone/audio/{round(time.time())}.weba'
+    audio_file.save(full_name)
+    embed = CLONE_OBJ.process_voice(full_name)
+    return embed.tolist()
+
+
 @app.route('/audioUpload', methods=['POST'])
 def audio():
     sent_file = request.files['audio-file']
-    full_name = f'VoiceClone/audio/{output:03}.weba'
-    sent_file.save(full_name)
-    embed = CLONE_OBJ.process_voice(full_name)
-    em = embed.tolist()
-
-    session['embed'] = em
+    session['embed'] = process_audio(sent_file)
 
     # print(embed == np.array(session['embed']))
     return jsonify({'result': 'done'})
@@ -90,12 +91,7 @@ def process():
     if request.method == 'POST':
 
         sent_file = request.files['file']
-        full_name = f'VoiceClone/audio/{output:03}.weba'
-        sent_file.save(full_name)
-        embed = CLONE_OBJ.process_voice(full_name)
-        em = embed.tolist()
-
-        session['embed'] = em
+        session['embed'] = process_audio(sent_file)
 
         return redirect(url_for('cloning'))
     else:

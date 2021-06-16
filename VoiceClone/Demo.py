@@ -11,6 +11,7 @@ import librosa
 import torch
 import sys
 import os
+import time
 from audioread.exceptions import NoBackendError
 
 
@@ -30,7 +31,6 @@ class Clone:
         encoder.load_model(self.encoder_path)
         self.synthesizer = Synthesizer(self.synthesizer_path)
         vocoder.load_model(self.vocoder_path)
-        self.num_generated = 0
 
     def clone_voice(self, embed, message):
         try:
@@ -61,10 +61,9 @@ class Clone:
             generated_wav = encoder.preprocess_wav(generated_wav)
 
             # Save it on the disk
-            filename = f"{self.output_folder}/demo_output_{self.num_generated:03}.wav"
+            filename = f"{self.output_folder}/demo_output_{round(time.time())}.wav"
             print(generated_wav.dtype)
             sf.write(filename, generated_wav.astype(np.float32), self.synthesizer.sample_rate)
-            self.num_generated += 1
             print("\nSaved output as %s\n\n" % filename)
             return filename
 
@@ -97,5 +96,5 @@ class Clone:
 
 
 if __name__ == "__main__":
-    Clone().voice_clone_audio('nano.weba', "Hello world")
+    Clone().voice_clone_audio('voice.mp3', "Hello world")
     # Clone().voice_clone_audio('voice.mp3',"Hello world")
