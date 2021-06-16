@@ -292,7 +292,7 @@ a{
             background-color: #069;
             border-radius: 1em;
             padding: 1em;
-            animation: bar 5s linear forwards;
+            animation: bar 7s linear forwards;
         }
 
         @keyframes bar {
