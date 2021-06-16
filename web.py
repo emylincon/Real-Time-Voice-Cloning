@@ -1,6 +1,5 @@
 from flask import Flask, render_template, url_for, request, session, redirect, jsonify
 from datetime import timedelta
-import codecs as c
 import time
 from werkzeug.utils import secure_filename
 from VoiceClone import Demo
@@ -33,13 +32,6 @@ def capture():
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
-
-
-def fin2(base_string, file_name):  # this writes the image to disk
-    str_obj = base_string.split('base64')[1][1:].encode()
-    fh = open(file_name, "wb")
-    fh.write(c.decode(obj=str_obj, encoding='base64'))
-    fh.close()
 
 
 @app.route('/cloning')
@@ -95,7 +87,7 @@ def process():
 
         return redirect(url_for('cloning'))
     else:
-        return home()
+        return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
