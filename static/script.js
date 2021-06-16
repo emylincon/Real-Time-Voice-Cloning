@@ -19,7 +19,7 @@ function loading() {
 function record(){
     var audio = document.getElementById( 'audio' );
     audio.innerHTML = '';
-    let timeout = 6000;
+    let timeout = 7000;
     voiceNode.innerHTML = '';
     grow();
 
